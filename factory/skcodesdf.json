@@ -1,0 +1,9 @@
+{
+	"name": "skcodesdf",
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2c1dbe33-fb8e-400d-a65d-c424bcdad0c1",
+		"tenantId": "7ba0a4ed-fe76-431c-ad81-0aa301c54b9d"
+	}
+}
