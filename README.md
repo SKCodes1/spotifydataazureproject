@@ -74,4 +74,42 @@ graph LR
     AF1 -.-> AF2
 %% spotifydataazureproj...
 
+### Cloud Production Ready Architecture
+
+
+graph TB
+    subgraph "Edge"
+        Dev[ESP32 + DHT22 + MQ + OLED]
+    end
+
+    subgraph "AWS Cloud"
+        IoT[AWS IoT Core]
+        L1[Lambda<br/>ProcessAirQualityData]
+        L2[Lambda<br/>MLInferenceService]
+        S3[S3 Data Lake]
+        DDB1[(DynamoDB<br/>Raw Data)]
+        DDB2[(DynamoDB<br/>Predictions)]
+        Glue[AWS Glue<br/>Data Catalog]
+        Athena[Athena<br/>SQL Analytics]
+        APIGW[API Gateway<br/>REST API]
+        CW[CloudWatch<br/>Metrics & Logs]
+    end
+
+    subgraph "Visualization & Alerts"
+        Grafana[Grafana]
+        WA[WhatsApp Alerts]
+    end
+
+    Dev -->|MQTT/TLS| IoT
+    IoT --> L1
+    IoT --> L2
+    IoT --> S3
+    L1 --> DDB1
+    L2 --> DDB2
+    L2 --> IoT
+    IoT --> Dev
+    S3 --> Glue
+    Glue --> Athena
+    Athena --> Grafana
+    CW --> WA
 
