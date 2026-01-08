@@ -24,59 +24,9 @@ The system demonstrates:
 
 ## 3. Architecture
 
-### Local (Development) Architecture
-
-```mermaid
-graph LR
-    subgraph "Docker Compose Environment"
-        subgraph "Message Broker"
-            MQTT[Mosquitto<br/>Port 1883]
-        end
-        
-        subgraph "Time-Series DB"
-            Influx[InfluxDB<br/>Port 8086]
-        end
-        
-        subgraph "Relational DB"
-            Maria[MariaDB<br/>Port 3306]
-        end
-        
-        subgraph "Orchestration"
-            AF1[Airflow Webserver<br/>Port 8080]
-            AF2[Airflow Scheduler]
-            DAG[WhatsApp DAG<br/>Daily Summary]
-        end
-        
-        subgraph "Visual Programming"
-            NR[Node-RED<br/>Port 1880]
-        end
-        
-        subgraph "Visualization"
-            Graf[Grafana<br/>Port 3000]
-        end
-    end
-    
-    subgraph "External Services"
-        Twilio[Twilio API<br/>WhatsApp]
-        Phone[WhatsApp on Phone]
-    end
-    
-    ESP32[ESP32] -->|MQTT| MQTT
-    MQTT --> NR
-    NR --> Influx
-    Influx --> AF2
-    AF2 --> Maria
-    AF2 --> DAG
-    DAG --> Twilio
-    Twilio --> Phone
-    Influx --> Graf
-    Maria --> Graf
-    AF1 -.-> AF2
-
-
 ### Cloud Production Ready Architecture
 
-
+```mermaid
 graph TB
     subgraph "Edge"
         Dev[ESP32 + DHT22 + MQ + OLED]
